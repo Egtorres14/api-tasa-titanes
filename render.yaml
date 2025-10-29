@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: api-tasa-titanes
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn api:app"
+    buildpacks:
+      - url: https://github.com/heroku/heroku-buildpack-google-chrome
