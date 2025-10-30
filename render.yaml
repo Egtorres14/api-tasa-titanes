@@ -2,12 +2,14 @@ services:
   - type: web
     name: api-tasa-titanes
     env: python
-    [cite_start]plan: free # o tu plan [cite: 120]
+    plan: free
     
-    # El Build Command ahora solo llama a nuestro script [cite: 125]
-    buildCommand: ./render_build.sh
+    # --- ¡LÍNEA MODIFICADA! ---
+    # 1. Da permisos de ejecución
+    # 2. Y LUEGO ejecuta el script
+    buildCommand: "chmod +x ./render_build.sh && ./render_build.sh"
 
-    # El Start Command DEBE modificar el PATH y luego iniciar Gunicorn [cite: 126]
+    # El Start Command sigue igual
     startCommand: |
       export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"; gunicorn api:app
 
