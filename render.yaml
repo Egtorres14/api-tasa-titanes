@@ -2,22 +2,12 @@ services:
   - type: web
     name: api-tasa-titanes
     env: python
-    plan: free
+    [cite_start]plan: free # o tu plan [cite: 120]
     
-    # --- ESTA ES LA SECCIÓN MODIFICADA ---
-    buildCommand: |
-      # 1. Actualiza la lista de paquetes de Linux
-      apt-get update
-      # 2. Instala las dependencias de Chrome
-      apt-get install -y wget gnupg
-      # 3. Añade el repositorio oficial de Google
-      wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-      sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
-      # 4. Actualiza de nuevo e instala Chrome
-      apt-get update
-      apt-get install -y google-chrome-stable
-      # 5. Finalmente, instala tus paquetes de Python
-      pip install -r requirements.txt
-    # --- FIN DE LA SECCIÓN MODIFICADA ---
-    
-    startCommand: "gunicorn api:app"
+    # El Build Command ahora solo llama a nuestro script [cite: 125]
+    buildCommand: ./render_build.sh
+
+    # El Start Command DEBE modificar el PATH y luego iniciar Gunicorn [cite: 126]
+    startCommand: |
+      export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"; gunicorn api:app
+
